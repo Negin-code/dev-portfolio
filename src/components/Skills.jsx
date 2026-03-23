@@ -50,28 +50,7 @@ export default function Skills() {
         ))}
       </div>
 
-      {/* ── Detail table ── */}
-      <div
-        className="fade-up"
-        style={{ borderTop: "1px solid var(--border)", marginTop: 32, transitionDelay: ".2s" }}
-      >
-        {SKILL_TABLE.map((row) => (
-          <div
-            key={row.name}
-            className="st-row"
-            style={{
-              display: "grid", gridTemplateColumns: "200px 140px 1fr",
-              gap: 24, alignItems: "center",
-              padding: "14px 0", borderBottom: "1px solid var(--border)",
-              transition: "background .15s",
-            }}
-          >
-            <span style={{ fontWeight: 500, fontSize: 14 }}>{row.name}</span>
-            <span style={{ fontFamily: "var(--f-mono)", fontSize: 11, color: "var(--muted)" }}>{row.level}</span>
-            <span className="st-note">{row.note}</span>
-          </div>
-        ))}
-      </div>
+     
     </section>
   );
 }

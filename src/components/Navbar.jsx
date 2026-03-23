@@ -54,7 +54,7 @@ export default function Navbar() {
             fontSize: 15, letterSpacing: "-.03em",
           }}
         >
-          NA
+          Negin
         </a>
 
         {/* Desktop links — absolutely centred */}

@@ -75,7 +75,7 @@ export default function Hero() {
           <strong className="text-ink font-medium">actually work.</strong>
         </p>
 
-        <div className="flex gap-3 flex-wrap items-center">
+        <div className="flex gap-3 flex-wrap items-center pr-2">
 <a
             href="#contact"
             className="inline-flex items-center gap-3 font-mono text-[13px] tracking-widest px-9 py-4 whitespace-nowrap hover:-translate-y-0.5 hover:opacity-80 transition-all duration-200"

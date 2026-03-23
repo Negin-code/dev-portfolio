@@ -199,6 +199,11 @@ body {
 }
 .nav-link-item:hover::after { width: 100%; }
 
+/* ── About ghost text ── */
+@media (max-width: 900px) {
+  .about-ghost { display: none; }
+}
+
 /* ── About section grid ── */
 #about {
   display: grid;
@@ -209,6 +214,7 @@ body {
 .about-right { padding: 80px 48px; border-left: 1px solid var(--border); }
 @media (max-width: 900px) {
   #about { grid-template-columns: 1fr; }
+  .about-left  { padding-bottom: 32px; }
   .about-right { border-left: none; border-top: 1px solid var(--border); }
 }
 /* ── Hero bottom row ── */

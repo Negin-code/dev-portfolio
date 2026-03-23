@@ -33,7 +33,7 @@ export default function Hero() {
         {lines.map(({ text, outline, delay }, i) => (
           <span
             key={text}
-            className={`block overflow-hidden text-[clamp(2.2rem,12vw,5.5rem)] md:text-[clamp(3rem,12vw,8rem)] xl:text-[clamp(4rem,13vw,15rem)] leading-[0.88] tracking-[-0.04em] ${outline ? "text-outline-dark" : "text-ink"}`}
+            className={`block overflow-hidden text-[clamp(2.2rem,12vw,5.5rem)] md:text-[clamp(3rem,12vw,8rem)] xl:text-[clamp(4rem,13vw,12rem)] leading-[0.88] tracking-[-0.04em] ${outline ? "text-outline-dark" : "text-ink"}`}
             style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800 }}
           >
             <span

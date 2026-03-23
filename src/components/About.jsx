@@ -6,7 +6,7 @@ const VALUES = [
 ];
 
 const META = [
-  ["Location", "Vancouver, BC · UTC−8"],
+  ["Location", "Vancouver, BC"],
   ["Status",   "Open to junior roles"],
   ["Focus",    "Frontend & Mobile"],
 ];
@@ -79,7 +79,7 @@ export default function About() {
             pointerEvents: "none", userSelect: "none", letterSpacing: "-.05em",
           }}
         >
-          AK
+          dev
         </div>
       </div>
 

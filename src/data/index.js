@@ -96,9 +96,9 @@ export const MARQUEE_ITEMS = [
 ];
 
 export const CONNECT_LINKS = [
-  { label: "Email",    val: "hello@alexkim.dev", href: "mailto:hello@alexkim.dev" },
-  { label: "LinkedIn", val: "in/alexkim",         href: "https://linkedin.com"     },
-  { label: "GitHub",   val: "@alexkim",           href: "https://github.com"       },
+  { label: "Email",    val: "iamneginasem@gmail.com", href: "mailto:iamneginasem@gmail.com" },
+  { label: "LinkedIn", val: "in/neginasem",         href: "https://www.linkedin.com/in/neginasem/"     },
+  { label: "GitHub",   val: "@neginasem",           href: "https://github.com/Negin-code"       },
 ];
 
 export const LEVEL_STYLES = {

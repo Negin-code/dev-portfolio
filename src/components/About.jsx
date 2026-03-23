@@ -1,8 +1,8 @@
 const VALUES = [
   { title: "Accessibility", text: "WCAG AA, keyboard nav, and screen reader passes — every time." },
-  { title: "Performance",   text: "Bundle budgets, TTI, and perceived speed. Fast is a feature." },
+  { title: "Performance",   text: "I pay attention to how things load and feel — because slow is something users always notice." },
   { title: "Collaboration", text: "Clear code, clear comments, because teammates deserve it." },
-  { title: "Learning",      text: "Ship imperfect things early. Iterate with real feedback." },
+  { title: "Learning",      text: "I ask good questions, take feedback seriously, and get better with every pull request." },
 ];
 
 const META = [
@@ -54,7 +54,7 @@ export default function About() {
               className="flex items-center justify-between pt-2.5"
               style={{ borderTop: "1px solid #1e1e1e" }}
             >
-              <span style={{ fontFamily: "var(--f-mono)", fontSize: 10, color: "#444", letterSpacing: ".1em", textTransform: "uppercase" }}>{label}</span>
+              <span style={{ fontFamily: "var(--f-mono)", fontSize: 11, color: "#444", letterSpacing: ".1em", textTransform: "uppercase" }}>{label}</span>
               <span style={{ fontFamily: "var(--f-mono)", fontSize: 11, color: "#888" }}>{val}</span>
             </div>
           ))}
@@ -87,17 +87,25 @@ export default function About() {
           A bit about<br />who I am.
         </h2>
 
-        <p className="mb-[18px]" style={{ fontSize: 15, color: "var(--muted)", lineHeight: 1.8 }}>
-          I came to development through self-teaching, drawn in by the immediate feedback loop of building something you can see and click. What started as curiosity became a{" "}
-          <strong style={{ color: "var(--ink)", fontWeight: 500 }}>genuine craft I care about.</strong>
+        <p className="mb-4.5" style={{ fontSize: 15, color: "var(--muted)", lineHeight: 1.8 }}>
+          I'm Negin — a frontend developer with a passion for crafting interfaces 
+          that are fast, accessible, and feel great to use.
         </p>
-        <p className="mb-[18px]" style={{ fontSize: 15, color: "var(--muted)", lineHeight: 1.8 }}>
-          I focus on frontend and mobile because that's where code meets people. The decisions I make — how long a transition takes, whether a form announces errors to a screen reader, whether a tap target is big enough — affect real humans.
+        <p className="mb-4.5" style={{ fontSize: 15, color: "var(--muted)", lineHeight: 1.8 }}>
+         Based in Vancouver, I specialize in React, JavaScript, HTML, and Tailwind CSS. 
+          I love taking a design from Figma and bringing it to life with clean, 
+          reusable components and smooth interactions. Performance isn't an 
+          afterthought for me — I've boosted mobile scores by 44% and cut load 
+          times by over 70% on real production projects.
         </p>
-        <p className="mb-[18px]" style={{ fontSize: 15, color: "var(--muted)", lineHeight: 1.8 }}>
-          I care about shipping{" "}
-          <strong style={{ color: "var(--ink)", fontWeight: 500 }}>small, well-tested slices</strong>{" "}
-          and iterating with real feedback. Accessibility isn't a checkbox — it's part of the craft.
+        <p className="mb-4.5" style={{ fontSize: 15, color: "var(--muted)", lineHeight: 1.8 }}>
+          I graduated from BCIT's New Media Design and Web Development program, 
+          and I hold a Bachelor's in Software Engineering — so I bring both a 
+          strong technical foundation and a sharp eye for user experience to 
+          everything I build.
+        </p>
+        <p className="mb-4.5" style={{ fontSize: 15, color: "var(--muted)", lineHeight: 1.8 }}>
+          I'm at my best when design and development work hand in hand.
         </p>
 
         {/* Values grid */}

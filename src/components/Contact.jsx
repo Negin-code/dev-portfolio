@@ -11,9 +11,22 @@ function ContactForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 1300));
-    setLoading(false);
-    setSubmitted(true);
+    try {
+      const res = await fetch("https://formspree.io/f/mbdprjjj", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ name: form.name, email: form.email, message: form.msg }),
+      });
+      if (res.ok) {
+        setSubmitted(true);
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
+    } catch {
+      alert("Network error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const inputStyle = {

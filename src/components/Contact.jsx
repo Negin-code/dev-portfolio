@@ -48,7 +48,7 @@ function ContactForm() {
   if (submitted) {
     return (
       <div className="text-center py-12">
-        <div className="w-14 h-14 border border-[#333] rounded-full flex items-center justify-center text-xl mx-auto mb-5 text-[var(--white)]">
+        <div className="w-14 h-14 border border-[#333] rounded-full flex items-center justify-center text-xl mx-auto mb-5 text-[text(--white)]">
           ✓
         </div>
         <h3 style={{ fontFamily: "var(--f-display)", fontWeight: 700, fontSize: "1.5rem", color: "var(--white)", marginBottom: 8 }}>

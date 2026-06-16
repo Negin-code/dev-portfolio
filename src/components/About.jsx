@@ -1,16 +1,24 @@
 import { C } from "../tokens";
 import { SecLabel, Pill, Arr } from "./ui";
 import { useReveal, rv } from "../hooks/useReveal";
+import { useIsMobile } from "../hooks/useIsMobile";
 
 export default function About({ scrollTo }) {
   const ref = useReveal();
+  const isMobile = useIsMobile();
+
   return (
-    <section id="about" ref={ref} style={{ padding: "100px 40px", background: C.dark }}>
+    <section id="about" ref={ref} style={{ padding: isMobile ? "60px 20px" : "100px 40px", background: C.dark }}>
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
         <div data-reveal style={rv(0)}>
           <SecLabel color={C.indigoLight}>About</SecLabel>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, alignItems: "start" }}>
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+          gap: isMobile ? 24 : 48,
+          alignItems: "start",
+        }}>
           <h2 data-reveal style={{
             ...rv(80),
             fontSize: "clamp(1.4rem, 2.6vw, 2rem)", fontWeight: 900,

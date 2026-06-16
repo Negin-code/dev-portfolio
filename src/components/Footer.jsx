@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { C } from "../tokens";
+import { useIsMobile } from "../hooks/useIsMobile";
 
 const ICONS = [
   {
@@ -24,15 +25,21 @@ const ICONS = [
 
 export default function Footer() {
   const [hov, setHov] = useState(null);
+  const isMobile = useIsMobile();
+
   return (
     <footer style={{
       background: C.dark,
       borderTop: "1px solid #1a1a1a",
-      padding: "24px 40px",
+      padding: isMobile ? "24px 20px" : "24px 40px",
     }}>
       <div style={{
         maxWidth: 1100, margin: "0 auto",
-        display: "flex", justifyContent: "space-between", alignItems: "center",
+        display: "flex",
+        flexDirection: isMobile ? "column" : "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        gap: isMobile ? 16 : 0,
       }}>
         <span style={{ fontSize: 18, fontWeight: 900, letterSpacing: "-0.04em", color: "#fff" }}>
           Negin<span style={{ color: C.indigoLight }}>.</span>

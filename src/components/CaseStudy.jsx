@@ -1,6 +1,7 @@
 import { C } from "../tokens";
 import { CTAButton } from "./ui";
 import { useReveal, rv } from "../hooks/useReveal";
+import { useIsMobile } from "../hooks/useIsMobile";
 import { CASE_STUDIES } from "../data";
 
 const pillBase = {
@@ -15,8 +16,11 @@ const pillBase = {
 export default function CaseStudy({ id, onBack }) {
   const cs = CASE_STUDIES[id];
   const ref = useReveal();
+  const isMobile = useIsMobile();
 
   if (!cs) return null;
+
+  const px = isMobile ? "20px" : "40px";
 
   return (
     <div style={{ flex: 1, overflowY: "auto", background: C.bg }}>
@@ -25,7 +29,7 @@ export default function CaseStudy({ id, onBack }) {
         position: "sticky", top: 0, zIndex: 100,
         background: "rgba(249,247,244,0.95)", backdropFilter: "blur(10px)",
         borderBottom: `1px solid ${C.border}`,
-        padding: "14px 40px",
+        padding: `14px ${px}`,
         display: "flex", alignItems: "center", justifyContent: "space-between",
       }}>
         <button onClick={onBack}
@@ -39,11 +43,13 @@ export default function CaseStudy({ id, onBack }) {
           onMouseEnter={e => e.currentTarget.style.color = C.textPrimary}
           onMouseLeave={e => e.currentTarget.style.color = C.textMuted}
         >
-          ← Back to Portfolio
+          ← {isMobile ? "Back" : "Back to Portfolio"}
         </button>
-        <span style={{ fontSize: 20, fontWeight: 900, letterSpacing: "-0.04em" }}>
-          Negin<span style={{ color: C.indigo }}>.</span>
-        </span>
+        {!isMobile && (
+          <span style={{ fontSize: 20, fontWeight: 900, letterSpacing: "-0.04em" }}>
+            Negin<span style={{ color: C.indigo }}>.</span>
+          </span>
+        )}
         {cs.url ? (
           <a href={`https://${cs.url}`} target="_blank" rel="noopener noreferrer"
             style={{
@@ -51,16 +57,16 @@ export default function CaseStudy({ id, onBack }) {
               color: C.indigo, textDecoration: "none",
               borderBottom: `1px solid ${C.indigo}`, paddingBottom: 2,
             }}>
-            Live Site ↗
+            Live ↗
           </a>
         ) : (
-          <span style={{ width: 80 }} />
+          !isMobile && <span style={{ width: 80 }} />
         )}
       </div>
 
       <div ref={ref}>
         {/* Hero */}
-        <div style={{ background: C.dark, padding: "72px 40px" }}>
+        <div style={{ background: C.dark, padding: `${isMobile ? "48px" : "72px"} ${px}` }}>
           <div style={{ maxWidth: 1100, margin: "0 auto" }}>
             <div data-reveal style={{ ...rv(0), display: "flex", alignItems: "center", gap: 12, marginBottom: 24 }}>
               <span style={{ width: 10, height: 10, background: cs.accent, borderRadius: "50%", display: "inline-block" }} />
@@ -82,16 +88,22 @@ export default function CaseStudy({ id, onBack }) {
             {/* Meta grid */}
             <div data-reveal style={{
               ...rv(180),
-              display: "grid", gridTemplateColumns: "repeat(3, auto) 1fr",
+              display: "grid",
+              gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(3, auto) 1fr",
+              gap: isMobile ? "16px 0" : 0,
               borderTop: "1px solid #1f1f1f", paddingTop: 28,
             }}>
               {[["Role", cs.role], ["Year", cs.year], ["Type", cs.type]].map(([label, val]) => (
-                <div key={label} style={{ paddingRight: 40, borderRight: "1px solid #1f1f1f", marginRight: 40 }}>
+                <div key={label} style={{
+                  paddingRight: isMobile ? 0 : 40,
+                  borderRight: isMobile ? "none" : "1px solid #1f1f1f",
+                  marginRight: isMobile ? 0 : 40,
+                }}>
                   <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#555", marginBottom: 6 }}>{label}</p>
                   <p style={{ fontSize: 13, fontWeight: 600, color: "#fff" }}>{val}</p>
                 </div>
               ))}
-              <div>
+              <div style={{ gridColumn: isMobile ? "1 / -1" : "auto" }}>
                 <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#555", marginBottom: 8 }}>Stack</p>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
                   {cs.stack.map(t => (
@@ -104,18 +116,23 @@ export default function CaseStudy({ id, onBack }) {
         </div>
 
         {/* Overview */}
-        <div style={{ padding: "80px 40px", borderBottom: `1px solid ${C.border}` }}>
-          <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: "200px 1fr", gap: 64 }}>
-            <p data-reveal style={{ ...rv(0), fontSize: 9, fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: C.indigo }}>Overview</p>
+        <div style={{ padding: `${isMobile ? "48px" : "80px"} ${px}`, borderBottom: `1px solid ${C.border}` }}>
+          <div style={{
+            maxWidth: 1100, margin: "0 auto",
+            display: isMobile ? "block" : "grid",
+            gridTemplateColumns: "200px 1fr",
+            gap: 64,
+          }}>
+            <p data-reveal style={{ ...rv(0), fontSize: 9, fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: C.indigo, marginBottom: isMobile ? 16 : 0 }}>Overview</p>
             <p data-reveal style={{ ...rv(80), fontSize: 17, lineHeight: 1.85, color: C.textSec }}>{cs.overview}</p>
           </div>
         </div>
 
         {/* Image gallery */}
         {cs.images && (
-          <div style={{ padding: "0 40px 80px", borderBottom: `1px solid ${C.border}` }}>
+          <div style={{ padding: `0 ${px} ${isMobile ? "48px" : "80px"}`, borderBottom: `1px solid ${C.border}` }}>
             <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
+              <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)", gap: 16 }}>
                 {cs.images.map((img, i) => (
                   <div key={i} data-reveal style={rv(i * 80)}>
                     <div style={{
@@ -141,11 +158,16 @@ export default function CaseStudy({ id, onBack }) {
         {/* Sections */}
         {cs.sections.map((sec, i) => (
           <div key={sec.title} style={{
-            padding: "64px 40px", borderBottom: `1px solid ${C.border}`,
+            padding: `${isMobile ? "40px" : "64px"} ${px}`, borderBottom: `1px solid ${C.border}`,
             background: i % 2 === 0 ? C.bg : C.surface,
           }}>
-            <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: "200px 1fr", gap: 64 }}>
-              <div>
+            <div style={{
+              maxWidth: 1100, margin: "0 auto",
+              display: isMobile ? "block" : "grid",
+              gridTemplateColumns: "200px 1fr",
+              gap: 64,
+            }}>
+              <div style={{ marginBottom: isMobile ? 16 : 0 }}>
                 <p data-reveal style={{ ...rv(0), fontSize: 9, fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: C.indigo, marginBottom: 8 }}>
                   {String(i + 1).padStart(2, "0")}
                 </p>
@@ -160,10 +182,10 @@ export default function CaseStudy({ id, onBack }) {
                 {sec.code && (
                   <pre data-reveal style={{
                     ...rv(160), background: "#0D0D0D", borderRadius: 10,
-                    padding: "24px 28px", overflowX: "auto", margin: 0,
+                    padding: isMobile ? "16px" : "24px 28px", overflowX: "auto", margin: 0,
                     border: "1px solid #1f1f1f", lineHeight: 1.7,
                   }}>
-                    <code style={{ fontFamily: "'Fira Code', 'Cascadia Code', 'Courier New', monospace", fontSize: 12.5, color: "#A5B4FC", whiteSpace: "pre" }}>
+                    <code style={{ fontFamily: "'Fira Code', 'Cascadia Code', 'Courier New', monospace", fontSize: isMobile ? 11 : 12.5, color: "#A5B4FC", whiteSpace: "pre" }}>
                       {sec.code}
                     </code>
                   </pre>
@@ -174,7 +196,7 @@ export default function CaseStudy({ id, onBack }) {
         ))}
 
         {/* Takeaways */}
-        <div style={{ padding: "80px 40px", background: C.dark }}>
+        <div style={{ padding: `${isMobile ? "48px" : "80px"} ${px}`, background: C.dark }}>
           <div style={{ maxWidth: 1100, margin: "0 auto" }}>
             <p data-reveal style={{ ...rv(0), fontSize: 9, fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: C.indigoLight, marginBottom: 32 }}>
               Key Takeaways
@@ -197,8 +219,15 @@ export default function CaseStudy({ id, onBack }) {
         </div>
 
         {/* Footer CTA */}
-        <div style={{ padding: "56px 40px", background: C.indigo }}>
-          <div style={{ maxWidth: 1100, margin: "0 auto", width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <div style={{ padding: `${isMobile ? "40px" : "56px"} ${px}`, background: C.indigo }}>
+          <div style={{
+            maxWidth: 1100, margin: "0 auto", width: "100%",
+            display: "flex",
+            flexDirection: isMobile ? "column" : "row",
+            alignItems: isMobile ? "flex-start" : "center",
+            justifyContent: "space-between",
+            gap: 24,
+          }}>
             <div>
               <p style={{ fontSize: 9, fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: C.indigoPale, marginBottom: 10 }}>
                 Liked this project?
@@ -207,7 +236,7 @@ export default function CaseStudy({ id, onBack }) {
                 Let's build something together.
               </h2>
             </div>
-            <div style={{ display: "flex", gap: 12 }}>
+            <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
               <button onClick={onBack} style={{ ...pillBase, background: "rgba(255,255,255,0.15)", color: "#fff", border: "none" }}>
                 ← All Projects
               </button>

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { C } from "../tokens";
 import { SecLabel, Pill, Arr, CTAButton } from "./ui";
 import { useReveal, rv } from "../hooks/useReveal";
+import { useIsMobile } from "../hooks/useIsMobile";
 
 const LINKS = [
   ["Email", "iamneginasem@gmail.com", "mailto:iamneginasem@gmail.com"],
@@ -11,6 +12,7 @@ const LINKS = [
 
 export default function Contact() {
   const ref = useReveal();
+  const isMobile = useIsMobile();
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [status, setStatus] = useState("idle");
 
@@ -31,10 +33,14 @@ export default function Contact() {
   return (
     <section id="contact" ref={ref}>
       {/* CTA banner */}
-      <div style={{ background: C.indigo, padding: "56px 40px" }}>
+      <div style={{ background: C.indigo, padding: isMobile ? "40px 20px" : "56px 40px" }}>
         <div style={{
           maxWidth: 1100, margin: "0 auto",
-          display: "flex", alignItems: "center", justifyContent: "space-between", gap: 24,
+          display: "flex",
+          flexDirection: isMobile ? "column" : "row",
+          alignItems: isMobile ? "flex-start" : "center",
+          justifyContent: "space-between",
+          gap: 24,
         }}>
           <div>
             <p style={{
@@ -53,10 +59,12 @@ export default function Contact() {
       </div>
 
       {/* Contact form + links */}
-      <div style={{ background: C.dark, padding: "72px 40px" }}>
+      <div style={{ background: C.dark, padding: isMobile ? "48px 20px" : "72px 40px" }}>
         <div style={{
           maxWidth: 1100, margin: "0 auto",
-          display: "grid", gridTemplateColumns: "1fr 1fr", gap: 64,
+          display: "grid",
+          gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+          gap: isMobile ? 48 : 64,
         }}>
           {/* Left: links */}
           <div>
@@ -76,6 +84,7 @@ export default function Contact() {
                     style={{
                       fontSize: 14, color: "#fff", borderBottom: "1px solid #333",
                       paddingBottom: 2, textDecoration: "none", transition: "border-color 0.2s",
+                      wordBreak: "break-all",
                     }}
                     onMouseEnter={e => e.currentTarget.style.borderColor = "#818CF8"}
                     onMouseLeave={e => e.currentTarget.style.borderColor = "#333"}
@@ -88,7 +97,7 @@ export default function Contact() {
           {/* Right: form */}
           <div data-reveal style={rv(100)}>
             {status === "sent" ? (
-              <div style={{ paddingTop: 48 }}>
+              <div>
                 <p style={{ fontSize: 28, fontWeight: 900, color: "#fff", letterSpacing: "-0.02em", marginBottom: 8 }}>
                   Message sent.
                 </p>

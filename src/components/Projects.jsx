@@ -2,15 +2,17 @@ import { useState } from "react";
 import { C } from "../tokens";
 import { SecLabel, PillGhost } from "./ui";
 import { useReveal, rv } from "../hooks/useReveal";
+import { useIsMobile } from "../hooks/useIsMobile";
 import { PROJECTS } from "../data";
 
 export default function Projects({ onCaseStudy }) {
   const ref = useReveal();
+  const isMobile = useIsMobile();
   const [hov, setHov] = useState(null);
 
   return (
     <section id="work" ref={ref} style={{
-      padding: "100px 40px", background: C.bg,
+      padding: isMobile ? "60px 20px" : "100px 40px", background: C.bg,
       borderTop: `1px solid ${C.border}`,
     }}>
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
@@ -49,7 +51,7 @@ export default function Projects({ onCaseStudy }) {
               onMouseLeave={() => setHov(null)}
             >
               <div style={{ background: p.accent }} />
-              <div style={{ padding: "20px 24px" }}>
+              <div style={{ padding: isMobile ? "16px" : "20px 24px" }}>
                 <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 8 }}>
                   <p style={{ fontSize: 15, fontWeight: 800, letterSpacing: "-0.01em" }}>{p.title}</p>
                   <p style={{ fontSize: 11, color: C.textMuted, fontWeight: 600 }}>{p.year}</p>

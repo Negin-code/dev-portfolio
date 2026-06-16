@@ -18,6 +18,13 @@ export const PROJECTS = [
     tags: ["React","React Router","Tailwind CSS","Vite","Vercel"],
   },
   {
+    title: "Envia — Web Performance",
+    year: "2025",
+    accent: C.dark,
+    desc: "Boosted mobile Lighthouse score from 48 to 92 and cut mobile LCP from 9.8s to 2.6s before a major product launch. Built a scalable Webflow component system translated from Figma.",
+    tags: ["Webflow","Figma","Core Web Vitals","HTML","CSS","JavaScript"],
+  },
+  {
     title: "Arc Weather PWA",
     year: "2023",
     accent: C.indigo,

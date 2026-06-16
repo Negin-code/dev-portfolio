@@ -20,7 +20,8 @@ export const PROJECTS = [
   {
     title: "Envia — Web Performance",
     year: "2025",
-    accent: C.dark,
+    accent: C.indigo,
+    href: "envia",
     desc: "Boosted mobile Lighthouse score from 48 to 92 and cut mobile LCP from 9.8s to 2.6s before a major product launch. Built a scalable Webflow component system translated from Figma.",
     tags: ["Webflow","Figma","Core Web Vitals","HTML","CSS","JavaScript"],
   },
@@ -156,6 +157,104 @@ const variantStyles = {
       "Tailwind pseudo-element classes enable CSS transitions without writing any custom CSS or JavaScript.",
       "A tight Figma-to-Tailwind workflow keeps design and implementation in sync from day one.",
       "The Layout and Outlet pattern meant NavBar and Footer only needed to be written and debugged once.",
+    ],
+  },
+  envia: {
+    title: "Envia",
+    subtitle: "Web Performance Optimization and Webflow Implementation",
+    year: "2025",
+    role: "Web Developer",
+    type: "Performance Engineering & Front-End Architecture",
+    stack: ["Webflow", "Figma", "Google Lighthouse", "Core Web Vitals", "HTML", "CSS", "JavaScript"],
+    url: "enviatogether.com",
+    accent: "#4F46E5",
+    overview: "Envia is a logistics and shipping technology company based in Vancouver, BC. In the months leading up to a major product launch, I was engaged to solve two interconnected problems: diagnosing and resolving critical performance bottlenecks in the web application, and translating Figma design specifications into a maintainable, component-driven Webflow build. All work was delivered before the public launch date.",
+    stats: [
+      { label: "Mobile Score", before: "48/100", after: "92/100", delta: "+44%" },
+      { label: "Desktop Score", before: "72/100", after: "98/100", delta: "+36%" },
+      { label: "Mobile LCP", before: "9.8s", after: "2.6s", delta: "73% faster" },
+      { label: "Layout Shift", before: "0.108", after: "0.002", delta: "98% reduction" },
+    ],
+    sections: [
+      {
+        title: "The Challenge",
+        content: "At the start of the engagement, the Envia web application had three distinct problems. Mobile performance was severely degraded with a Largest Contentful Paint of 9.8 seconds — nearly four times Google's Poor threshold. A Cumulative Layout Shift score of 0.108 was causing disorienting layout jumps on page load. And there was no scalable front-end architecture, meaning every future update required redundant manual effort across multiple pages.",
+      },
+      {
+        title: "Performance Audit",
+        content: "The engagement began with a systematic audit of the application architecture to identify the root causes of poor mobile performance. The strategy addressed site architecture holistically covering asset delivery, render-blocking resources, image loading, and layout stability.",
+        code: `// Key optimizations applied
+
+// 1. Deferred non-critical resource loading
+<link rel="preload" href="hero.webp" as="image" fetchpriority="high" />
+<script src="analytics.js" defer></script>
+
+// 2. Lazy loading below-fold images
+<img src="feature.webp" loading="lazy" decoding="async" />
+
+// 3. Reserved space to eliminate CLS
+.hero-image {
+  width: 100%;
+  aspect-ratio: 16 / 9; /* prevents layout shift */
+}
+
+// 4. Priority hints for LCP element
+<img src="hero.webp" fetchpriority="high" />`,
+      },
+      {
+        title: "Core Web Vitals Results",
+        content: "Two metrics were treated as primary engineering targets. Mobile LCP was reduced from 9.8 seconds to 2.6 seconds, a 73% improvement that moved the application from a Poor to a Good Core Web Vitals rating. CLS was reduced from 0.108 to 0.002, a 98% reduction that virtually eliminated visual instability. Both were confirmed before launch.",
+      },
+      {
+        title: "Webflow Component System",
+        content: "Design specifications were translated from Figma into production-ready interfaces in Webflow. The implementation prioritised long-term maintainability over one-off builds. Global reusable components including a site-wide Navigation module and FAQ module were built as Webflow Symbols so that a single edit propagates automatically across every page.",
+        code: `// Webflow Symbol approach — edit once, update everywhere
+
+// JSON schema defined for CMS collections
+{
+  "collection": "FAQ",
+  "fields": {
+    "question": { "type": "PlainText", "required": true },
+    "answer":   { "type": "RichText",  "required": true },
+    "category": { "type": "Option",    "validations": ["General", "Shipping", "Billing"] }
+  }
+}
+
+// Responsive breakpoint config per component
+// Desktop → Tablet → Mobile Landscape → Mobile Portrait
+// Navigation collapses to hamburger toggle at mobile breakpoint`,
+      },
+      {
+        title: "Responsive Engineering",
+        content: "Full responsive behaviour was engineered across all four breakpoints — desktop, tablet, mobile landscape, and mobile portrait — for every component. Webflow's flexbox and grid layout systems replaced fixed-pixel layouts with percentage-based and min/max-constrained structures that reflow gracefully at each breakpoint.",
+        code: `/* Replaced fixed-pixel layout */
+.nav-container {
+  /* Before */
+  width: 1200px;
+
+  /* After — fluid with constraints */
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 clamp(16px, 4vw, 48px);
+}
+
+/* Typography scaling per breakpoint */
+.hero-heading {
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 1.1;
+}`,
+      },
+      {
+        title: "AI Design Framework Documentation",
+        content: "This engagement included authoring structured internal documentation to bridge the gap between conversational UX principles and implementable development guidelines. Informal AI-assisted design discussions were translated into a formal framework document, giving the development team actionable guidelines for applying conversational UX principles consistently and reducing ambiguity in future design-to-development handoffs.",
+      },
+    ],
+    takeaways: [
+      "LCP is almost always a resource loading problem first. Preload hints and fetchpriority solve it faster than architectural changes.",
+      "CLS is a layout reservation problem. Setting explicit dimensions and aspect ratios before assets load eliminates nearly all instability.",
+      "Webflow Symbols are the correct abstraction for shared UI. A navigation built as a Symbol takes one edit to update everywhere.",
+      "Figma-to-Webflow fidelity depends on design tokens being explicit. Ambiguous specs produce inconsistent implementations.",
+      "Performance benchmarking needs to happen at the component level, not just at the page level, to isolate root causes accurately.",
     ],
   },
   gigledger: {

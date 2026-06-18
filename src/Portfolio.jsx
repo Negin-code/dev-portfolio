@@ -12,7 +12,10 @@ import CaseStudy from "./components/CaseStudy";
 export default function Portfolio() {
   const containerRef = useRef(null);
   const [scrolled, setScrolled] = useState(false);
-  const [caseStudy, setCaseStudy] = useState(null);
+  const [caseStudy, setCaseStudy] = useState(() => {
+    const hash = window.location.hash.slice(1);
+    return hash || null;
+  });
 
   useEffect(() => {
     const el = containerRef.current;
@@ -21,6 +24,14 @@ export default function Portfolio() {
     el.addEventListener("scroll", fn);
     return () => el.removeEventListener("scroll", fn);
   }, []);
+
+  useEffect(() => {
+    if (caseStudy) {
+      window.history.replaceState(null, "", `#${caseStudy}`);
+    } else {
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+  }, [caseStudy]);
 
   const scrollTo = (id) => {
     const el = containerRef.current;
@@ -39,7 +50,7 @@ export default function Portfolio() {
       overflow: "hidden",
     }}>
       {caseStudy ? (
-        <CaseStudy id={caseStudy} onBack={() => setCaseStudy(null)} />
+        <CaseStudy id={caseStudy} onBack={() => setCaseStudy(null)} onCaseStudy={setCaseStudy} />
       ) : (
         <>
           <Nav scrolled={scrolled} scrollTo={scrollTo} />

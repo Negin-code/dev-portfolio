@@ -79,7 +79,7 @@ export default function Hero({ scrollTo }) {
               boxShadow: "0 24px 64px rgba(0,0,0,0.12)",
             }}>
               <img
-                src="/hero.jpg"
+                src="/hero.png"
                 alt="Negin Asem"
                 style={{
                   width: "100%", height: "100%",

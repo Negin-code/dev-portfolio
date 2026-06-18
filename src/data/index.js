@@ -25,20 +25,6 @@ export const PROJECTS = [
     desc: "Boosted mobile Lighthouse score from 48 to 92 and cut mobile LCP from 9.8s to 2.6s before a major product launch. Built a scalable Webflow component system translated from Figma.",
     tags: ["Webflow","Figma","Core Web Vitals","HTML","CSS","JavaScript"],
   },
-  {
-    title: "Arc Weather PWA",
-    year: "2023",
-    accent: C.indigo,
-    desc: "Offline-first PWA with custom SVG data visualization. Installable on iOS and Android.",
-    tags: ["PWA","Service Workers","SVG","Canvas API"],
-  },
-  {
-    title: "Typeset — Open Source",
-    year: "2023",
-    accent: C.dark,
-    desc: "Type scale generator used by 800+ designers. Outputs CSS custom properties and Tailwind config.",
-    tags: ["Svelte","Open Source","Typography"],
-  },
 ];
 
 export const SKILLS = [

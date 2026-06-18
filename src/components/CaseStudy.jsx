@@ -128,6 +128,39 @@ export default function CaseStudy({ id, onBack }) {
           </div>
         </div>
 
+        {/* Stats grid */}
+        {cs.stats && (
+          <div style={{ padding: `0 ${px} ${isMobile ? "48px" : "80px"}`, borderBottom: `1px solid ${C.border}` }}>
+            <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+              <div style={{
+                display: "grid",
+                gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(4, 1fr)",
+                gap: 1, background: C.border, borderRadius: 12, overflow: "hidden",
+              }}>
+                {cs.stats.map((s, i) => (
+                  <div key={i} data-reveal style={{ ...rv(i * 60), background: C.surface, padding: "36px 24px 28px" }}>
+                    <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: C.textMuted, marginBottom: 12 }}>{s.label}</p>
+                    {s.before ? (
+                      <>
+                        <div style={{ display: "flex", flexDirection: "column", gap: 4, marginBottom: 10 }}>
+                          <p style={{ fontSize: 11, color: C.textMuted }}>Before: <span style={{ fontWeight: 700, color: "#ef4444" }}>{s.before}</span></p>
+                          <p style={{ fontSize: 11, color: C.textMuted }}>After: <span style={{ fontWeight: 700, color: "#22c55e" }}>{s.after}</span></p>
+                        </div>
+                        <p style={{ fontSize: 18, fontWeight: 900, letterSpacing: "-0.02em", color: C.indigo }}>{s.delta}</p>
+                      </>
+                    ) : (
+                      <>
+                        <p style={{ fontSize: s.value.length > 4 ? 18 : 28, fontWeight: 900, letterSpacing: "-0.03em", color: C.textPrimary, marginBottom: 6 }}>{s.value}</p>
+                        <p style={{ fontSize: 11, color: C.textMuted }}>{s.sub}</p>
+                      </>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Image gallery */}
         {cs.images && (
           <div style={{ padding: `0 ${px} ${isMobile ? "48px" : "80px"}`, borderBottom: `1px solid ${C.border}` }}>
@@ -180,15 +213,19 @@ export default function CaseStudy({ id, onBack }) {
                   {sec.content}
                 </p>
                 {sec.code && (
-                  <pre data-reveal style={{
-                    ...rv(160), background: "#0D0D0D", borderRadius: 10,
-                    padding: isMobile ? "16px" : "24px 28px", overflowX: "auto", margin: 0,
-                    border: "1px solid #1f1f1f", lineHeight: 1.7,
-                  }}>
-                    <code style={{ fontFamily: "'Fira Code', 'Cascadia Code', 'Courier New', monospace", fontSize: isMobile ? 11 : 12.5, color: "#A5B4FC", whiteSpace: "pre" }}>
-                      {sec.code}
-                    </code>
-                  </pre>
+                  <div data-reveal style={{ ...rv(160), background: "#0D0D0D", borderRadius: 10, border: "1px solid #1f1f1f", overflow: "hidden" }}>
+                    {sec.file && (
+                      <div style={{ background: "#1e293b", padding: "6px 14px", display: "flex", justifyContent: "space-between" }}>
+                        <span style={{ fontFamily: "monospace", fontSize: 10, color: "#94a3b8" }}>{sec.file}</span>
+                        <span style={{ fontFamily: "monospace", fontSize: 10, color: "#475569", textTransform: "uppercase" }}>TypeScript</span>
+                      </div>
+                    )}
+                    <pre style={{ padding: isMobile ? "16px" : "24px 28px", overflowX: "auto", margin: 0, lineHeight: 1.7 }}>
+                      <code style={{ fontFamily: "'Fira Code', 'Cascadia Code', 'Courier New', monospace", fontSize: isMobile ? 11 : 12.5, color: "#A5B4FC", whiteSpace: "pre" }}>
+                        {sec.code}
+                      </code>
+                    </pre>
+                  </div>
                 )}
               </div>
             </div>

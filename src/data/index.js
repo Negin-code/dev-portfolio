@@ -259,36 +259,172 @@ const variantStyles = {
   },
   gigledger: {
     title: "GigLedger",
-    subtitle: "Full-Stack PWA for Gig Economy Financial Management",
+    subtitle: "Full-stack PWA for gig workers — AI-powered financial assistant, quarterly IRS tax estimator, and multi-platform income tracker built with React, TypeScript, and Supabase.",
     year: "2026",
     role: "Full-Stack Developer",
     type: "Progressive Web App",
-    stack: ["React", "TypeScript", "Supabase", "Tailwind CSS", "PostgreSQL", "PWA", "Anthropic API", "Recharts", "Lovable"],
+    stack: ["React", "TypeScript", "Supabase", "PostgreSQL", "TanStack Query", "TanStack Router", "Tailwind CSS", "Recharts", "PWA", "Anthropic API"],
     url: null,
     accent: "#4F46E5",
-    overview: "Full-stack PWA built from scratch — Supabase backend with row-level security, real-time data, and auth. AI financial assistant with dynamic context injection from live user data. Quarterly IRS tax estimation engine, multi-platform income tracking, and savings goal projection algorithm.",
+    overview: "67 million Americans do gig work. Most juggle multiple income streams — rideshare, freelance design, content creation — with income that is irregular, untaxed at source, and invisible to generic finance apps built for salaried workers. GigLedger solves this with a production-ready full-stack PWA: multi-platform income tracking, a weighted IRS quarterly tax estimator, an AI financial assistant with live data context injection, and a savings goal projection algorithm.",
+    stats: [
+      { label: "Pages", value: "6", sub: "Routes" },
+      { label: "DB Tables", value: "4", sub: "RLS Secured" },
+      { label: "AI Context", value: "Live Data", sub: "Dynamic injection" },
+      { label: "Deployment", value: "PWA", sub: "Installable" },
+    ],
     sections: [
       {
-        title: "Backend Architecture",
-        content: "Built on Supabase with PostgreSQL, implementing row-level security policies to ensure users can only access their own financial data. Real-time subscriptions keep the dashboard live without polling.",
+        title: "Architecture",
+        content: "The stack was chosen for code ownership and production readiness. React with TypeScript provides type-safe component architecture with all data shapes typed via Income, Expense, and Goal interfaces. TanStack Router handles file-based type-safe routing — each page is a self-contained route module. TanStack Query manages server state with automatic cache invalidation through custom hooks.",
+        file: "stack overview",
+        code: `// Layer          Choice              Reason
+// Frontend       React + TypeScript  Type-safe components, typed interfaces
+// Routing        TanStack Router     File-based, type-safe, route-level auth
+// Data fetching  TanStack Query      Cache invalidation, custom hooks
+// Backend        Supabase            PostgreSQL + auth + RLS
+// AI             Anthropic API       claude-sonnet-4-6 with live context
+// Mobile         PWA                 Installable, offline-capable`,
       },
       {
-        title: "AI Financial Assistant",
-        content: "Integrated Anthropic API with dynamic context injection — the assistant receives the user's actual income, expenses, and goals as structured context, enabling personalised financial guidance rather than generic responses.",
+        title: "Data Layer — Queries & Mutations",
+        content: "All data fetching is centralised in a single queries file. Each entity has a typed query hook and a shared useMutateRow mutation factory that handles both insert and update via an upsert pattern, with automatic cache invalidation on success. The presence of an id field determines whether the operation is an UPDATE or INSERT — a simple abstraction that eliminated 6 near-identical mutation functions.",
+        file: "src/lib/queries.ts",
+        code: `export function useIncome() {
+  return useQuery({
+    queryKey: ["income"],
+    queryFn: async (): Promise<Income[]> => {
+      const { data, error } = await supabase
+        .from("income").select("*")
+        .order("entry_date", { ascending: false });
+      if (error) throw error;
+      return data as Income[];
+    },
+  });
+}
+
+// Shared mutation factory — handles insert and update
+export function useMutateRow(table: "income" | "expenses" | "goals", invalidateKey: string) {
+  const qc = useQueryClient();
+  const upsert = useMutation({
+    mutationFn: async (row: any) => {
+      const uid = await getUserId();
+      const payload = { ...row, user_id: uid };
+      if (row.id) {
+        const { id, ...rest } = payload;
+        const { error } = await supabase.from(table).update(rest).eq("id", id);
+        if (error) throw error;
+      } else {
+        const { error } = await supabase.from(table).insert(payload);
+        if (error) throw error;
+      }
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: [invalidateKey] }),
+  });
+  return { upsert };
+}`,
       },
       {
         title: "Tax Estimation Engine",
-        content: "Quarterly IRS tax estimation engine that calculates self-employment tax obligations based on income streams, deductions, and filing status — updated in real time as new income is logged.",
+        content: "The core differentiating feature. The calculation lives inside a useMemo hook using a weighted average tax rate — not a flat rate. Each income row stores its own tax_rate. A $3,000 Freelance Design payment at 28% and a $300 Content Creator payment at 25% produce a weighted effective rate of 27.7% — not the 26.5% a simple average would give. The difference compounds across a full year.",
+        file: "src/pages/tax.tsx",
+        code: `function quarterDeadlines(year: number) {
+  return [
+    { q: "Q1", range: "Jan–Mar", due: new Date(year, 3, 15) },
+    { q: "Q2", range: "Apr–May", due: new Date(year, 5, 15) },
+    { q: "Q3", range: "Jun–Aug", due: new Date(year, 8, 15) },
+    { q: "Q4", range: "Sep–Dec", due: new Date(year + 1, 0, 15) },
+  ];
+}
+
+const { totalIncome, annualTax, effRate, quarterly } = useMemo(() => {
+  const yearIncome = income.filter(i => i.month.endsWith(String(year)));
+  const total = yearIncome.reduce((a, i) => a + Number(i.amount), 0);
+
+  // Weighted: each entry contributes amount × its own tax_rate
+  const tax = yearIncome.reduce(
+    (a, i) => a + Number(i.amount) * Number(i.tax_rate), 0
+  );
+  return {
+    totalIncome: total,
+    annualTax: tax,
+    effRate: total > 0 ? (tax / total) * 100 : 0,
+    quarterly: tax / 4,
+  };
+}, [income, year]);`,
       },
       {
-        title: "Income Tracking",
-        content: "Multi-platform income tracking supports gig workers with income from multiple sources. Recharts powers the data visualisation layer with responsive charts for income trends and savings projections.",
+        title: "Goal Projection Algorithm",
+        content: "The Goals page calculates two values per goal: months needed to reach the target at the current contribution rate, and months remaining until the deadline. Comparing them produces the on-track or behind-schedule status. The monthsUntil helper uses year × 12 + month arithmetic — a December to January deadline returns 1 month, not negative 11.",
+        file: "src/pages/goals.tsx",
+        code: `function monthsUntil(deadline: string) {
+  const d = new Date(deadline + "T00:00:00");
+  const now = new Date();
+  return (d.getFullYear() - now.getFullYear()) * 12
+    + (d.getMonth() - now.getMonth());
+}
+
+const monthsNeeded = g.monthly_contribution && Number(g.monthly_contribution) > 0
+  ? Math.ceil(remaining / Number(g.monthly_contribution))
+  : null;
+
+const monthsLeft = g.deadline ? monthsUntil(g.deadline) : null;
+
+const onTrack = monthsNeeded != null && monthsLeft != null
+  ? monthsNeeded <= monthsLeft
+  : null;
+
+// "✓ At $400/month, you'll reach this goal in 9 months — On track"
+// "⚠ At $200/month, you'll reach this goal in 9 months — Behind schedule"`,
+      },
+      {
+        title: "Dashboard — Charts & Visualisation",
+        content: "The dashboard builds both chart datasets inside useMemo hooks. The income chart uses a Map keyed by month string to accumulate platform amounts in a single pass — faster and more readable than nested reduce calls. The _sort field added to each row enables correct chronological ordering. Charts only recompute when income or expenses actually change.",
+        file: "src/pages/dashboard.tsx",
+        code: `const chartData = useMemo(() => {
+  const platforms = Array.from(
+    new Set(income.map(i => platformLabel(i.platform, i.platform_custom)))
+  );
+  const byMonth = new Map<string, any>();
+
+  income.forEach(i => {
+    const key = i.month;
+    if (!byMonth.has(key)) {
+      const row: any = {
+        month: new Date(i.month + " 1").toLocaleString("en-US", { month: "short" }),
+        _sort: new Date(i.month + " 1").getTime(),
+      };
+      platforms.forEach(p => (row[p] = 0));
+      byMonth.set(key, row);
+    }
+    const row = byMonth.get(key);
+    const p = platformLabel(i.platform, i.platform_custom);
+    row[p] = (row[p] ?? 0) + Number(i.amount);
+  });
+
+  return { data: Array.from(byMonth.values()).sort((a, b) => a._sort - b._sort), platforms };
+}, [income]);
+
+export const PLATFORM_COLORS: Record<string, string> = {
+  "Freelance Design": "var(--chart-1)",
+  "Content Creator":  "var(--chart-2)",
+  Rideshare:          "var(--chart-3)",
+  Fiverr:             "oklch(0.65 0.15 145)",
+};`,
+      },
+      {
+        title: "AI Financial Assistant",
+        content: "Uses claude-sonnet-4-6 with dynamic context injection per session from live Supabase data. The assistant receives the user's actual income, expenses, and goals as structured context — enabling personalised financial guidance rather than generic responses. TanStack Router's /_authenticated/ prefix enforces auth at the route level so unauthenticated users are redirected before any data is fetched.",
+        file: null,
+        code: null,
       },
     ],
     takeaways: [
-      "Row-level security in Supabase is declarative and composable — cleaner than application-layer auth checks.",
-      "Dynamic context injection into LLM prompts produces dramatically more useful responses than static system prompts.",
-      "PWA capabilities (offline support, installability) are high-value additions with relatively low implementation cost.",
+      "TanStack Router's createFileRoute with the /_authenticated/ prefix enforces auth at the route level — unauthenticated users are redirected before any data is fetched, not after.",
+      "The useMutateRow factory eliminated 6 near-identical mutation functions. The presence of an id field as the UPDATE vs INSERT branch condition is a simple but powerful abstraction.",
+      "Per-entry tax rates produce meaningfully different estimates. A $3,000 entry at 28% and a $300 entry at 25% give 27.7% weighted — not 26.5% averaged. Over a full year the difference matters.",
+      "Building chart data with a Map keyed by month string in a single forEach pass is faster and more readable than nested reduce calls.",
+      "The monthsUntil helper using year × 12 + month arithmetic handles year boundaries correctly — a December to January deadline returns 1 month, not negative 11.",
     ],
   },
 };

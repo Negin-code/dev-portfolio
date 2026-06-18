@@ -25,7 +25,7 @@ export default function Hero({ scrollTo }) {
     }}>
       <div style={{
         display: "grid",
-        gridTemplateColumns: isMobile ? "1fr" : "1fr 200px",
+        gridTemplateColumns: isMobile ? "1fr" : "1fr 300px",
         gap: 32,
         alignItems: "center", width: "100%", maxWidth: 1100, margin: "0 auto",
       }}>
@@ -66,20 +66,40 @@ export default function Hero({ scrollTo }) {
         </div>
 
         {!isMobile && (
-          <div style={{
-            position: "relative", height: 240,
-            display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden",
-          }}>
-            <div aria-hidden="true" style={{
-              fontSize: 148, fontWeight: 900, letterSpacing: "-0.08em",
-              color: C.border, lineHeight: 1, userSelect: "none",
-            }}>NG</div>
+          <div style={{ position: "relative", alignSelf: "stretch", minHeight: 380 }}>
+            {/* Indigo accent ring offset behind the photo */}
             <div style={{
-              position: "absolute", bottom: 20, right: 0,
-              background: C.dark, color: "#fff",
-              padding: "12px 16px", borderRadius: 12, textAlign: "right",
+              position: "absolute", inset: 0, top: 12, left: 12,
+              borderRadius: 20, border: `2px solid ${C.indigo}`, opacity: 0.35,
+            }} />
+            {/* Photo frame */}
+            <div style={{
+              position: "absolute", inset: 0,
+              borderRadius: 18, overflow: "hidden",
+              boxShadow: "0 24px 64px rgba(0,0,0,0.12)",
             }}>
-              <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase", color: "#666", marginBottom: 3 }}>
+              <img
+                src="/hero.jpg"
+                alt="Negin Asem"
+                style={{
+                  width: "100%", height: "100%",
+                  objectFit: "cover", objectPosition: "top center",
+                  display: "block",
+                }}
+              />
+              {/* Subtle gradient fade at bottom for card legibility */}
+              <div style={{
+                position: "absolute", bottom: 0, left: 0, right: 0, height: 100,
+                background: "linear-gradient(to top, rgba(10,10,10,0.6), transparent)",
+              }} />
+            </div>
+            {/* Based in card */}
+            <div style={{
+              position: "absolute", bottom: 16, left: 16,
+              background: "rgba(10,10,10,0.85)", backdropFilter: "blur(8px)",
+              color: "#fff", padding: "10px 14px", borderRadius: 10,
+            }}>
+              <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase", color: "#888", marginBottom: 3 }}>
                 Based in
               </p>
               <p style={{ fontSize: 13, fontWeight: 800 }}>Vancouver, CA</p>

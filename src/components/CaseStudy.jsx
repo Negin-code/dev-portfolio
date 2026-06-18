@@ -116,7 +116,7 @@ export default function CaseStudy({ id, onBack }) {
         </div>
 
         {/* Overview */}
-        <div style={{ padding: `${isMobile ? "48px" : "80px"} ${px}`, borderBottom: `1px solid ${C.border}` }}>
+        <div style={{ padding: `${isMobile ? "48px" : "80px"} ${px}`, borderBottom: cs.images ? "none" : `1px solid ${C.border}` }}>
           <div style={{
             maxWidth: 1100, margin: "0 auto",
             display: isMobile ? "block" : "grid",

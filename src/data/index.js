@@ -52,9 +52,9 @@ export const CASE_STUDIES = {
     accent: "#0A0A0A",
     overview: "Kiddo Style Cycle is a multi-page educational web application built with React that teaches children about sustainable fashion through an interactive, character-led experience. Guided by a friendly mascot named Lina, the app walks kids through the lifecycle of clothing, the problems of fast fashion, and concrete actions they can take. Everything is written in age-appropriate language with a playful visual design.",
     images: [
-      { label: "Home Page", note: "Add screenshot of home page here" },
-      { label: "Learn Page", note: "Add screenshot of Learn route here" },
-      { label: "Game Page", note: "Add screenshot of Game route here" },
+      { label: "Home Page", src: "/kiddo-home.png" },
+      { label: "Learn Page", src: "/kiddo-learn.png" },
+      { label: "Game Page", src: "/kiddo-game.png" },
     ],
     sections: [
       {

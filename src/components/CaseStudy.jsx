@@ -169,16 +169,23 @@ export default function CaseStudy({ id, onBack }) {
                 {cs.images.map((img, i) => (
                   <div key={i} data-reveal style={rv(i * 80)}>
                     <div style={{
-                      background: C.border, borderRadius: 12, aspectRatio: "16/10",
-                      display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+                      borderRadius: 12, aspectRatio: "16/10", overflow: "hidden",
                       border: `1px solid ${C.border}`,
+                      background: img.src ? C.dark : C.border,
+                      display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
                     }}>
-                      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#bbb" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                        <rect x="3" y="3" width="18" height="18" rx="2"/>
-                        <circle cx="8.5" cy="8.5" r="1.5"/>
-                        <path d="m21 15-5-5L5 21"/>
-                      </svg>
-                      <p style={{ fontSize: 10, color: "#bbb", marginTop: 8 }}>{img.note}</p>
+                      {img.src ? (
+                        <img src={img.src} alt={img.label} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center", display: "block" }} />
+                      ) : (
+                        <>
+                          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#bbb" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="2"/>
+                            <circle cx="8.5" cy="8.5" r="1.5"/>
+                            <path d="m21 15-5-5L5 21"/>
+                          </svg>
+                          <p style={{ fontSize: 10, color: "#bbb", marginTop: 8 }}>{img.note}</p>
+                        </>
+                      )}
                     </div>
                     <p style={{ fontSize: 11, fontWeight: 600, color: C.textMuted, marginTop: 10, letterSpacing: "0.06em", textTransform: "uppercase" }}>{img.label}</p>
                   </div>
